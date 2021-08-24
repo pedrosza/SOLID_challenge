@@ -1,0 +1,133 @@
+{
+  "openapi": "3.0.0",
+  "info":{
+    "title": "User API Documentation",
+    "description": "This API is for Users data",
+    "version": "1.0.0",
+    "contact": {
+      "email": "pedro.hs08@gmail.com"
+    }
+  },
+  "tags":[{
+    "name": "User",
+    "description": "Management users"
+  }],
+  "paths": {
+    "/users":{
+      "post":{
+        "tags": ["User"],
+        "summary": "Create a user.",
+        "description": "Create a user with Name and Email, if this isn't already exists.",
+        "requestBody": {
+          "content":{
+            "aplication/json":{
+              "schema": {
+                "type": "object",
+                "properties":{
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "exemple":{
+                  "name": "Pedro Souza",
+                  "email": "email1@somewhere.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created"
+          },
+          "400": {
+            "description": "User already Exist"
+          }
+        }
+      },
+      "get": {
+        "tags": ["User"],
+        "summary": "List all users",
+        "description": "List all users, if who requested is an admin user.",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "params",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returned users"
+          },
+          "400": {
+            "description": "User isn't an admin"
+          }
+        }
+      }
+    },
+    "/users/{id}":{
+      "get":{
+        "tags": [
+          "User"
+        ],
+        "summary":"List one user.",
+        "description": "List the user who belongs to specific id.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema":{
+              "type": "string",
+              "format":"uuid"
+            },
+            "required":true
+          }
+        ],
+        "responses":{
+          "200": {
+            "description":"return user."
+          },
+          "400": {
+            "description":"User not found."
+          }
+        }
+      }
+    },
+    "/users/{id}/admin":{
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Turn an user to admin.",
+        "description": "Change the user to an admin user.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the user"
+          },
+          "404": {
+            "description": "User not found!/Don't have permission to make a user an admin."
+          }
+        }
+      }
+    }
+  }
+}
